@@ -1,4 +1,4 @@
-# my-project
+# ops-dashboard
 
 > A Vue.js project
 
