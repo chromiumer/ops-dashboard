@@ -1,4 +1,4 @@
-
+{
   "name": "ops-dashboard",
   "version": "1.0.0",
   "description": "A Vue.js project",
@@ -13,6 +13,8 @@
   "dependencies": {
     "babel-plugin-component": "^1.1.1",
     "element-ui": "^2.15.1",
+    "less-loader": "^4.1.0",
+    "sass": "^1.32.8",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
@@ -44,7 +46,6 @@
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-webpack-plugin": "^2.30.1",
     "less": "^4.1.1",
-    "less-loader": "^8.0.0",
     "node-notifier": "^5.1.2",
     "optimize-css-assets-webpack-plugin": "^3.2.0",
     "ora": "^1.2.0",

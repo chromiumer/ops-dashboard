@@ -8,12 +8,21 @@ import ElementUI from 'element-ui'
 
 // 导入全局样式
 import './assets/css/global.css'
+import './assets/fonts/iconfont.css'
 
 import axios from 'axios'
 
 // api根路径
 axios.defaults.baseURL = 'http://localhost:8888/api/private/v1'
 
+// axios 请求拦截
+axios.interceptors.request.use(config => {
+  // console.log(config)
+  // 为请求对象添加Token验证的Authorization字段
+  config.headers.Authorization = window.sessionStorage.getItem('token')
+  // 最后必须return config
+  return config
+})
 Vue.prototype.$http = axios
 
 Vue.use(ElementUI)
