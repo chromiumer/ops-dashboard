@@ -84,26 +84,26 @@
 export default {
   data () {
     // 验证邮箱规则
-    var checkEmail = (rule, value, cb) => {
+    var checkEmail = (rule, value, callback) => {
       // 验证邮箱的正则表达式
       const regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/
 
       if (regEmail.test(value)) {
         // 合法的邮箱
-        return cb
+        return callback()
       }
-      cb(new Error('请输入合法的邮箱！'))
+      callback(new Error('请输入合法的邮箱！'))
     }
 
     // 验证手机号规则
-    var checkMobile = (rule, value, cb) => {
+    var checkMobile = (rule, value, callback) => {
       // 验证手机号正则表达式
       const regMobile = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/
       if (regMobile.test(value)) {
         // 合法的邮箱
-        return cb
+        return callback()
       }
-      cb(new Error('请输入合法的手机号！'))
+      callback(new Error('请输入合法的手机号！'))
     }
     return {
     // 获取用户列表参数对象
@@ -112,7 +112,7 @@ export default {
         // 当前页数
         pagenum: 1,
         // 当前每页多少条数据
-        pagesize: 2
+        pagesize: 10
       },
       userlist: [],
       total: 0,
@@ -222,8 +222,18 @@ export default {
     },
     // 点击按钮添加新用户
     addUser() {
-      this.$refs.addFormRef.validate(valid => {
-        console.log(valid)
+      this.$refs.addFormRef.validate(async valid => {
+        if (!valid) return
+        // 有效才会发起真正的网络请求
+        const {data: res} = await this.$http.post('users', this.addForm)
+        if (res.meta.status !== 201) {
+          this.$message.error('添加用户失败！')
+        }
+        this.$message.success('添加用户成功！')
+        // 隐藏添加用户的对话框
+        this.addDialogVisible = false
+        // 重新获取用户列表数据
+        this.getUserList()
       })
     }
   }
