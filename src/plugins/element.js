@@ -22,7 +22,8 @@ import {
   Switch,
   Tooltip,
   Pagination,
-  Dialog
+  Dialog,
+  MessageBox
 } from 'element-ui'
 
 // 导入弹窗提示组件
@@ -50,3 +51,4 @@ Vue.use(Pagination)
 Vue.use(Dialog)
 // 挂载弹窗组件
 Vue.prototype.$message = Message
+Vue.prototype.$confirm = MessageBox.confirm

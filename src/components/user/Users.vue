@@ -12,7 +12,7 @@
             <!-- 搜索与添加区域 -->
             <el-row :gutter="20">
                 <el-col :span="7">
-                    <el-input placeholder="请输入内容" v-model="queryInfo.query" clearable @clear="getUserList">
+                    <el-input placeholder="请输入要查询的用户名" v-model="queryInfo.query" clearable @clear="getUserList">
                         <el-button slot="append" icon="el-icon-search" @click="getUserList"></el-button>
                     </el-input>
                 </el-col>
@@ -38,7 +38,7 @@
                 <!-- 修改按钮 -->
                 <el-button type="primary" icon="el-icon-edit" size="mini" @click="showEditDialog(scope.row.id)"></el-button>
                 <!-- 删除按钮 -->
-                <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
+                <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeUserById(scope.row.id)"></el-button>
                 <!-- 分配角色按钮 -->
                 <el-tooltip effect="dark" content="分配权限" placement="top" :enterable=false>
                       <el-button type="warning" icon="el-icon-setting" size="mini"></el-button>
@@ -323,6 +323,31 @@ export default {
         // 提示修改成功
         this.$message.success('修改用户信息成功！')
       })
+    },
+    // 根据Id删除对应的用户信息
+    async removeUserById (id) {
+      // console.log(id)
+      // 弹框询问用户是否删除数据
+      const confirmResult = await this.$confirm('您将永久删除该用户, 请问是否继续?', '请确认', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'error'
+      }).catch(err => err)
+      // .catch(err => {  以上为此种方法的简写
+      //  return err
+      // })
+      // 如果用户确认删除，则返回值为字符串 confirm
+      // 如果用户取消删除，则返回值为字符串 cancel
+      // console.log(confirmResult)
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('已取消删除！')
+      }
+      const { data: res } = await this.$http.delete('users/' + id)
+      if (res.meta.status !== 200) {
+        return this.$message.error('删除用户失败！')
+      }
+      this.$message.success('删除用户成功！')
+      this.getUserList()
     }
   }
 }
